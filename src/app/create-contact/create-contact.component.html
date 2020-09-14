@@ -1,0 +1,89 @@
+<div *ngIf="createContact">
+    <div class="row mt-5">
+        <div class="col-md-12 mt-5">
+
+            <button class="btn btn-secondary" (click)="read_data()">Read/Update/Delete</button>
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-md-12  text-center font-weight-bold">
+            <h1>Create A Contact</h1>
+        </div>
+    </div>
+
+    <div class="row ">
+        <div class="col-md-12 ">
+            <form [formGroup]="create_contact" class="center">
+                <div class="row">
+                    <mat-form-field class="col-md-12 col-12">
+                        <mat-label class="text-success">Contact Name</mat-label>
+                        <input matInput formControlName="name">
+                    </mat-form-field>
+                </div>
+                <div class="row">
+                    <mat-form-field class="col-md-12 col-12">
+                        <mat-label class="text-success">Email</mat-label>
+                        <input matInput formControlName="email">
+                    </mat-form-field>
+                </div>
+                <div class="row">
+                    <mat-form-field class="col-md-12">
+                        <mat-label class="text-success">Date of Birth</mat-label>
+                        <input matInput [matDatepicker]="dob" formControlName="dob">
+                    </mat-form-field>
+                    <mat-datepicker-toggle [for]="dob" matSuffix></mat-datepicker-toggle>
+                    <mat-datepicker #dob></mat-datepicker>
+                </div>
+                <div class="col-md-12 text-center" *ngIf="!updateData">
+                    <button class="btn btn-primary" (click)="create()"><i
+            class="fa fa-save "></i>&nbsp;Create Contact</button>
+                </div>
+                <div class=" col-md-12 text-center" *ngIf="updateData">
+                    <button class="btn btn-primary " (click)="update() "><i
+            class="fa fa-save "></i>&nbsp;Update Contact</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="read_contact_data">
+
+    <div class="col-md-4 d-none d-md-block d-lg-block d-sm-none">
+        <div class="row col-md-12 mt-5">
+            <h3 class="text-primary mt-5 mb-0"><i>Contact Details</i></h3>
+        </div>
+        <table mat-table [dataSource]="readContactData" matSort class="mat-elevation-z8">
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Contact Name</th>
+                <td mat-cell *matCellDef="let data;">{{data.name}}</td>
+            </ng-container>
+            <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef>Email</th>
+                <td mat-cell *matCellDef="let data;">{{data.email}}</td>
+            </ng-container>
+            <ng-container matColumnDef="dob">
+                <th mat-header-cell *matHeaderCellDef>Date Of Birth</th>
+                <td mat-cell *matCellDef="let data;">{{data.dob}}</td>
+            </ng-container>
+            <ng-container matColumnDef="update">
+                <th mat-header-cell *matHeaderCellDef>Update</th>
+                <td mat-cell *matCellDef="let data;let i=index;">
+                    <button mat-raised-button class="btn text-secondary" (click)="update_data(i)">Update</button>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="delete">
+                <th mat-header-cell *matHeaderCellDef>Delete</th>
+                <td mat-cell *matCellDef="let data;let i=index;">
+                    <button mat-raised-button class="btn text-danger" (click)="delete_data(i)">Delete</button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="contact_details_header "></tr>
+            <tr mat-row *matRowDef="let row; columns: contact_details_header;"></tr>
+
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5,10,15,25]" showFirstLastButtons class="col-md-12"></mat-paginator>
+    </div>
+</div>
