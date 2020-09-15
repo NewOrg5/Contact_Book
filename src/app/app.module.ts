@@ -16,12 +16,20 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { DeleteContactComponent } from './create-contact/delete-contact/delete-contact.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { SearchPipe } from './search.pipe';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { HttpClientModule } from '@angular/common/http';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    CreateContactComponent
+    CreateContactComponent,
+    DeleteContactComponent,
+    SearchPipe
   ],
   imports: [
     BrowserModule,
@@ -36,7 +44,10 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatInputModule,
     FormsModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatExpansionModule,
+    FontAwesomeModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

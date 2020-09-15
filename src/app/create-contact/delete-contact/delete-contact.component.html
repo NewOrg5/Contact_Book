@@ -1,0 +1,20 @@
+<div class="bg-delete-header modal-header row py-2 bg-danger text-white">
+    <div class="col-md-12 col-12">
+        <span class="pl-2">
+                Delete Confirmation<i class="fa fa-times float-right my-1" (click)="closeModal()"></i>
+            </span>
+    </div>
+</div>
+<div class="row my-3">
+    <div class="col-md-12">
+        Are you sure that to delete the contact details of &nbsp;<strong>{{dat[index]["name"]}}</strong>&nbsp;?
+    </div>
+</div>
+<hr class="row my-0">
+<div class="row">
+    <div class="col-md-12 mt-1 text-right">
+        <button class="btn btn-secondary text-white" (click)="deleteContact()"><i
+                    class="fa fa-trash"></i>&nbsp;Delete</button>
+    </div>
+
+</div>
