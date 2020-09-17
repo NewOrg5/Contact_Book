@@ -19,7 +19,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { DeleteContactComponent } from './create-contact/delete-contact/delete-contact.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { SearchPipe } from './search.pipe';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 import { HttpClientModule } from '@angular/common/http';
 
 
@@ -46,7 +46,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatDatepickerModule,
     MatNativeDateModule,
     MatExpansionModule,
-    FontAwesomeModule,
+
     HttpClientModule
   ],
   providers: [],

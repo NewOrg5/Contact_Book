@@ -2,7 +2,20 @@ table {
     width: 100%
 }
 
-.center {
-    margin: 0 auto;
-    width: 400px;
+::ng-deep .mat-header-row {
+    background-color: #fff6a9 !important;
+}
+
+::ng-deep .mat-header-cell {
+    color: black;
+}
+
+h3 {
+    font-size: 20px;
+}
+
+::ng-deep .mat-card {
+    border: 55px !important;
+    border-radius: 30px !important;
+    border: #000 !important;
 }

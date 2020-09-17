@@ -1,22 +1,24 @@
 <div *ngIf="createContact">
-    <div class="row mt-5">
-        <div class="col-md-12 col-12 mt-5 text-right">
+    <div class="row my-5">
+        <div class="col-md-12 col-12 mt-1 text-right">
 
-            <button class="btn btn-secondary" (click)="read_data()" [disabled]="!contact_data.length">Read/Update/Delete</button>
+            <button class="btn btn-primary" (click)="read_data()" [disabled]="!contact_data.length"><i class="fa fa-eye"></i>&nbsp;View Contacts</button>
         </div>
-        <!-- {{contact_data.length}} -->
+
     </div>
     <div class="row ">
-        <div class="col-md-12 col-12  text-center font-weight-bold">
-            <h1>Create A Contact</h1>
+        <div class="col-md-12 col-12  text-center mt-3" *ngIf="!updateData">
+            <h3 class=" font-weight-bold "><i>Create Contact</i></h3>
+        </div>
+        <div class="col-md-12 col-12  text-center font-weight-bold mt-3" *ngIf="updateData">
+            <h3 class=" font-weight-bold "><i>Update Contact</i></h3>
         </div>
     </div>
-
-    <div class="row ">
-        <div class="col-md-12 col-12">
-            <form [formGroup]="create_contact" class="center">
+    <div class="row mx-1">
+        <div class="col-md-6 offset-md-3 col-12 mat-card  mat-elevation-z8 py-3">
+            <form [formGroup]="create_contact">
                 <div class="row">
-                    <mat-form-field class="col-md-12 col-12">
+                    <mat-form-field class="col-md-10 offset-md-1 col-12">
                         <mat-label class="text-success">Contact Name</mat-label>
                         <input matInput formControlName="name">
                         <mat-error *ngIf="name.errors?.required&&name.touched">
@@ -25,7 +27,7 @@
                     </mat-form-field>
                 </div>
                 <div class="row">
-                    <mat-form-field class="col-md-12 col-12">
+                    <mat-form-field class="col-md-10 offset-md-1 col-12">
                         <mat-label class="text-success">Email</mat-label>
                         <input matInput formControlName="email">
                         <mat-error *ngIf="email.errors?.required&&email.touched">
@@ -35,25 +37,49 @@
                     </mat-form-field>
                 </div>
                 <div class="row">
-                    <mat-form-field class="col-md-12 col-12">
+                    <mat-form-field class="col-md-10 offset-md-1 col-12">
                         <mat-label class="text-success">Date of Birth</mat-label>
                         <input matInput [matDatepicker]="dob" formControlName="dob" (click)="dob.open()" [max]="TodayDate">
 
                         <mat-datepicker-toggle [for]="dob" matSuffix></mat-datepicker-toggle>
                         <mat-datepicker #dob></mat-datepicker>
-                        <!-- <mat-error *ngIf="dob.errors?.required&&dob.touched">
-                            Please Provide a Date of Birth
-                        </mat-error> -->
+
+                        <mat-error *ngIf="create_contact.get('dob').hasError('required')">
+                            Please provide a date of birth
+                        </mat-error>
+
+                    </mat-form-field>
+                </div>
+                <div class="row">
+                    <mat-form-field class="col-md-10 offset-md-1 col-12">
+                        <mat-label class="text-success">State</mat-label>
+                        <input matInput formControlName="state">
+                        <mat-error *ngIf="state.errors?.required&&state.touched">
+                            Please Provide a state name
+                        </mat-error>
+
+                    </mat-form-field>
+                </div>
+                <div class="row">
+                    <mat-form-field class="col-md-10 offset-md-1  col-12">
+                        <mat-label class="text-success">City</mat-label>
+                        <input matInput formControlName="city">
+                        <mat-error *ngIf="city.errors?.required&&city.touched">
+                            Please Provide a City Name
+                        </mat-error>
+
                     </mat-form-field>
                 </div>
                 <div class="col-md-12 col-12 text-center" *ngIf="!updateData">
-                    <button class="btn btn-primary" (click)="create()"><i
-            class="fa fa-save "></i>&nbsp;Create Contact</button>
+                    <button class="btn btn-success" (click)="create()" [disabled]="create_contact.invalid"><i
+            class="fa fa-save "></i>&nbsp;Create</button>
                 </div>
                 <div class=" col-md-12 col-12 text-center" *ngIf="updateData">
-                    <button class="btn btn-primary " (click)="update() "><i
-            class="fa fa-save "></i>&nbsp;Update Contact</button>
+                    <button class="btn btn-success " (click)="update() " [disabled]="create_contact.invalid"><i
+            class="fa fa-pencil-square-o "></i>&nbsp;Update</button>
                 </div>
+
+                {{create_contact.get('email').value}}
             </form>
         </div>
     </div>
@@ -63,113 +89,107 @@
 
     <div class="col-md-12 col-12 text-right px-0">
 
-        <button type="button" class="btn mt-5" (click)="goBack()">
+        <button type="button" class="btn mt-5 px-0" (click)="goBack()">
             <i class="fa fa-chevron-left" aria-hidden="true"></i>&nbsp;Back</button>
     </div>
-    <div class="input-group mb-3 container">
-        <div class="col-md-4 px-0">
+    <div class="input-group mb-3 container px-0">
+        <div class="col-md-4 ">
             <input type="text" class="form-control" [(ngModel)]="searchValue" placeholder="Search By Contact Name" aria-describedby="basic-addon2">
         </div>
         <div class="col-md-4">
 
-            <h3 class="text-center mb-0 font-weight-bold">Contact Details</h3>
+            <h3 class="text-center font-weight-bold mb-0">Contact Details</h3>
         </div>
+
     </div>
     <div class="row">
 
         <div class="container d-none d-md-block d-lg-block d-sm-none">
 
-            <table mat-table [dataSource]="readContactData|search:searchValue" matSort class="mat-elevation-z8">
+            <table mat-table [dataSource]="contact_data|search:searchValue" class="w-100 mat-elevation-z8">
+                <ng-container matColumnDef="sl#">
+                    <th mat-header-cell *matHeaderCellDef class="table-header">Sl #</th>
+                    <td mat-cell *matCellDef="let i=index" class="table-data ">{{i+1}}</td>
+                </ng-container>
                 <ng-container matColumnDef="name">
-                    <th mat-header-cell *matHeaderCellDef>Contact Name</th>
-                    <td mat-cell *matCellDef="let data;">{{data.name}}</td>
+                    <th mat-header-cell *matHeaderCellDef class="table-header">Contact Name</th>
+                    <td mat-cell *matCellDef="let data;" class="table-data ">{{data.name}}</td>
                 </ng-container>
                 <ng-container matColumnDef="email">
-                    <th mat-header-cell *matHeaderCellDef>Email</th>
-                    <td mat-cell *matCellDef="let data;">{{data.email}}</td>
+                    <th mat-header-cell *matHeaderCellDef class="table-header">Email</th>
+                    <td mat-cell *matCellDef="let data;" class="table-data ">{{data.email}}</td>
                 </ng-container>
                 <ng-container matColumnDef="dob">
-                    <th mat-header-cell *matHeaderCellDef>Date Of Birth</th>
-                    <td mat-cell *matCellDef="let data;">{{data.dob|date}}</td>
+                    <th mat-header-cell *matHeaderCellDef class="table-header">Date Of Birth</th>
+                    <td mat-cell *matCellDef="let data;" class="table-data">{{data.dob|date}}</td>
+                </ng-container>
+                <ng-container matColumnDef="state">
+                    <th mat-header-cell *matHeaderCellDef class="table-header">State</th>
+                    <td mat-cell *matCellDef="let data;" class="table-data">{{data.state}}</td>
+                </ng-container>
+                <ng-container matColumnDef="city">
+                    <th mat-header-cell *matHeaderCellDef class="table-header">City</th>
+                    <td mat-cell *matCellDef="let data;" class="table-data">{{data.city}}</td>
                 </ng-container>
                 <ng-container matColumnDef="update">
-                    <th mat-header-cell *matHeaderCellDef>Update</th>
-                    <td mat-cell *matCellDef="let data;let i=index;">
+                    <th mat-header-cell *matHeaderCellDef class="table-header">Update</th>
+                    <td mat-cell *matCellDef="let data;let i=index;" class="table-data">
                         <button mat-raised-button class="btn " (click)="update_data(i)"><i class="fa fa-pencil text-primary"></i></button>
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="delete">
-                    <th mat-header-cell *matHeaderCellDef>Delete</th>
-                    <td mat-cell *matCellDef="let data;let i=index;">
+                    <th mat-header-cell *matHeaderCellDef class="table-header">Delete</th>
+                    <td mat-cell *matCellDef="let data;let i=index;" class="table-data">
                         <button mat-raised-button class="btn " (click)="delete_data(i)"><i class="fa fa-trash text-danger"></i></button>
                     </td>
                 </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="contact_details_header "></tr>
+                <tr mat-header-row *matHeaderRowDef="contact_details_header"></tr>
                 <tr mat-row *matRowDef="let row; columns: contact_details_header;"></tr>
-
             </table>
 
-            <mat-paginator [pageSizeOptions]="[5,10,15,25]" showFirstLastButtons class="col-md-12 col-12"></mat-paginator>
+            <mat-paginator [pageSizeOptions]="[5,10,15,25]" [length]="contact_data.length" (page)="getPaginatorData($event)" showFirstLastButtons class="col-md-12 col-12" pageSize=5></mat-paginator>
         </div>
 
         <div class="container d-md-none d-lg-none d-block d-sm-block">
-
-            <!-- <table mat-table [dataSource]="readContactData" matSort class="mat-elevation-z8">
-            <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef>Contact Name</th>
-                <td mat-cell *matCellDef="let data;">{{data.name}}</td>
-            </ng-container>
-            <ng-container matColumnDef="email">
-                <th mat-header-cell *matHeaderCellDef>Email</th>
-                <td mat-cell *matCellDef="let data;">{{data.email}}</td>
-            </ng-container>
-            <ng-container matColumnDef="dob">
-                <th mat-header-cell *matHeaderCellDef>Date Of Birth</th>
-                <td mat-cell *matCellDef="let data;">{{data.dob|date}}</td>
-            </ng-container>
-            <ng-container matColumnDef="update">
-                <th mat-header-cell *matHeaderCellDef>Update</th>
-                <td mat-cell *matCellDef="let data;let i=index;">
-                    <button mat-raised-button class="btn text-secondary" (click)="update_data(i)">Update</button>
-                </td>
-            </ng-container>
-            <ng-container matColumnDef="delete">
-                <th mat-header-cell *matHeaderCellDef>Delete</th>
-                <td mat-cell *matCellDef="let data;let i=index;">
-                    <button mat-raised-button class="btn text-danger" (click)="delete_data(i)">Delete</button>
-                </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="contact_details_header "></tr>
-            <tr mat-row *matRowDef="let row; columns: contact_details_header;"></tr>
-
-        </table> -->
-
-            <!-- <mat-paginator [pageSizeOptions]="[5,10,15,25]" showFirstLastButtons class="col-md-12"></mat-paginator> -->
-
             <mat-accordion displayMode="flat" multi mat-table>
                 <section matSort class="mat-elevation-z2 mat-header-row table-header">
                     <div class="row col-12">
-                        <div class="col-3 pl-4 "><b>Contact Name</b></div>
-                        <div class="col-4 pl-4"><b>Email</b></div>
-                        <div class="col-5"><b>Date of Birth</b></div>
+                        <div class="col-3 "><b>Contact Name</b></div>
+
+                        <div class="col-4 "><b>Date of Birth</b></div>
+                        <div class="col-2 "><b>Edit</b></div>
+                        <div class="col-2"><b>Delete</b></div>
                     </div>
                 </section>
-                <mat-expansion-panel *ngFor="let item of readContactData| slice: lowValue : highValue;">
-                    <mat-expansion-panel-header class="col-12 table-data h-100 my-1 ">
+                <mat-expansion-panel *ngFor="let item of contact_data|search:searchValue| slice: lowValue : highValue;let i=index;">
+                    <mat-expansion-panel-header class="col-12 table-data h-100 my-1 pl-0 ">
                         <div class="row col-12">
-                            <div class="col-3 px-0">{{item.name}}</div>
-                            <div class="col-4"> {{ item.email }}</div>
-                            <div class="col-5 pl-4 px-0">{{ item.dob}}</div>
+                            <div class="col-3">{{item.name}}</div>
+
+                            <div class="col-4 ml-2">{{ item.dob|date}}</div>
+                            <div class="col-2 "><button mat-raised-button class="btn text-primary" (click)="update_data(i)"><i class="fa fa-pencil text-primary"></i></button></div>
+                            <div class="col-2 ml-2"><button mat-raised-button class="btn text-danger" (click)="delete_data(i)"><i class="fa fa-trash text-danger"></i></button></div>
                         </div>
                     </mat-expansion-panel-header>
-                    <!-- <div class="expand-data row my-1 ">
-                    <div class="col-6"><b>Price</b></div>
-                    <div class="col-6 "> <b>:</b>&nbsp; {{item.price}} </div>
-                </div> -->
+                    <div class="expand-data row my-1 ">
+                        <div class="col-3"><b>Email</b></div>
+                        <div class="col-9"><b>:</b>&nbsp; {{ item.email }}</div>
+
+                        <div class="col-3"><b>State</b></div>
+                        <div class="col-9 "> <b>:</b>&nbsp; {{item.state}} </div>
+                        <div class="col-3"><b>city</b></div>
+                        <div class="col-9 "> <b>:</b>&nbsp; {{item.city}} </div>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel *ngIf="!contact_data.length">
+                    <mat-expansion-panel-header class="col-12">
+                        No data Available
+                    </mat-expansion-panel-header>
+
                 </mat-expansion-panel>
             </mat-accordion>
         </div>
+
 
     </div>
