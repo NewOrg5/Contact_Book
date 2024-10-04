@@ -1,16 +1,15 @@
-name: Angular
+name: Angular CI
+on:
+     push:
+       branches: [ master ]
+     pull_request:
+       branches: [ master ]
 
-     on:
-       push:
-         branches: [ master ]
-       pull_request:
-         branches: [ master ]
+jobs:
+     build:
+       runs-on: self-hosted
 
-     jobs:
-       build:
-         runs-on: self-hosted
-
-         steps:
+       steps:
          - name: Checkout repository
            uses: actions/checkout@v2
 
