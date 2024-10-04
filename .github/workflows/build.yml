@@ -1,4 +1,4 @@
-name: Angular CI
+name: Angular
 
      on:
        push:
@@ -8,7 +8,7 @@ name: Angular CI
 
      jobs:
        build:
-         runs-on: ubuntu-latest
+         runs-on: self-hosted
 
          steps:
          - name: Checkout repository
